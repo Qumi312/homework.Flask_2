@@ -9,8 +9,7 @@
 перенаправление на страницу ввода имени и электронной почты.
 """
 
-from flask import Flask, request, render_template, make_response
-
+from flask import Flask, request, session, render_template, redirect, url_for, make_response
 app = Flask(__name__)
 app.secret_key = 'e929b77fd371a3937f27409f6711ebed3701066b33d702d374be1964c83f8520'
 
@@ -30,12 +29,12 @@ def get_info():
         response.set_cookie('username', name)
         response.set_cookie('email', mail)
         return response
-    return render_template('get_info.html', title='Авторизация')
+    return render_template('get_info.html')
 
 
 @app.route('/exit/')
 def exit():
-    res = make_response(render_template('get_info.html', title='Авторизация'))
+    res = make_response(redirect(url_for('get_info')))
     res.set_cookie('username', 'None', max_age=0)
     res.set_cookie('email', 'None', max_age=0)
     return res
